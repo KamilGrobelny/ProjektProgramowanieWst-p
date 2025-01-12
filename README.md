@@ -1,1 +1,3 @@
 # ProjektProgramowanieWst-p
+Autorzy: Kamil Grobelny 287372 
+Instalacja: Pracujemy nad tą częścią projektu...
