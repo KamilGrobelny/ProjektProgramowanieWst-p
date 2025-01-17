@@ -1,0 +1,1 @@
+ten plik został przesłany na serwer przy użyciu git bash i ssh 
