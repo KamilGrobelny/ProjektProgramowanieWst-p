@@ -1,2 +1,2 @@
 #!/bin/bash
-python PvC-zgadywanka.py
+py PvC-zgadywanka.py
