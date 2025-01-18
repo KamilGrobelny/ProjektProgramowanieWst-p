@@ -1,4 +1,18 @@
 from random import randint
+import os
+
+def PoprawnoscN(n: str):
+    """Funkcja zwraca True jeśli wartość n nie została odpowiednio wyrażona(z przedziału [1, 10], tylko liczby całkowite)
+    @ n: długość szyfru, która musi zawierać się w przedziale [1, 10]"""
+    for i in range(len(n)):
+        if ord(n[i])>57 or ord(n[i]) < 48:
+            print("n musi być liczbą całkowitą, podaj n ponownie")
+            return True
+    n=int(n)
+    if (n > 10) or (n < 1):
+        print("n musi być liczbą całowitą z przedziału [1, 10], podaj n ponownie")
+        return True
+
 def PoprawnoscProby(proba: list, n: int):
     """Funkcja sprawdza czy odgadnięcie podane przez użytkownika jest poprawnie wyrażone: odpowiednia długość n oraz same cyfry jeżeli dane nie są poprawnie  wyrażone to funkcja zwraca True
     @ proba: odgadnięcie podane przez drugiego gracza, musi być listą pojedynczych cyfr o typie int
@@ -65,7 +79,7 @@ def Odgadywanie(zgadywana: list, n: int, krok: int):
     Wartosci = InfoZwrotne(x, zgadywana, n)
     krok+=1
     if Wartosci[0]==n:
-        print(f"wygrałeś, Twoja liczba odgadnięć: {krok}")
+        print(f"Odgadłeś szyfr! Twoja liczba odgadnięć: {krok}")
         return [krok, True]
     else:
         print(f"Liczba cyfr występujących w szyfrze na właściwych miejscach: {Wartosci[0]}")
@@ -74,15 +88,12 @@ def Odgadywanie(zgadywana: list, n: int, krok: int):
 
 def PvC():
     """Funkcja umożliwia grę człowieka z komputerem, człowiek zgaduje szyfr komputera"""
-    n = input("podaj ilucyfrowy ma być szyfr: ")
-    for i in range(len(n)):
-        if ord(n[i])>57 or ord(n[i]) < 48:
-            print("n musi być liczbą całkowitą, podaj n ponownie")
-            return PvC()
-    n=int(n)
-    if (n > 10) or (n < 1):
-        print("n musi być liczbą całowitą z przedziału [1, 10], podaj n ponownie")
+    n = input("podaj n: ")
+    if n=="":
         return PvC()
+    if PoprawnoscN(n):
+        return PvC()
+    n=int(n)
     zgadywana = []
     for i in range (n):
         zgadywana.append(randint(0, 9))
@@ -90,11 +101,14 @@ def PvC():
         return 0
 
 def PvP1 ():
-    """Funkcja umożliwia grę człowieka z człowiekiem (komputer losuje szyfry)"""
-    n = int(input("podaj ilucyfrowy ma być szyfr: "))
+    """Funkcja umożliwia grę człowieka z człowiekiem, komputer losuje graczom szyfry"""
+    n = input("podaj n: ")
+    if n=="":
+        return PvP1()
     a = 0
-    if (n > 10) or (n < 1):
-        raise ValueError("n musi być liczbą całowitą z przedziału [1, 10]")
+    if PoprawnoscN(n):
+        return PvP1()
+    n=int(n)
     zgadywana = []
     zgadywana1 = []
     for i in range(n):
@@ -112,23 +126,34 @@ def PvP1 ():
         print("Wygrał 2 zawodnik.")
 
 def PvP2 ():
-    """Funkcja umożliwia grę człowieka z człowiekiem (gracze wybieraja sami szyfr dla przeciwnika)"""
-    n = int(input("podaj ilucyfrowy ma być szyfr: "))
-    a = 0
-    if (n > 10) or (n < 1):
-        raise ValueError("n musi być liczbą całowitą z przedziału [1, 10]")
+    n = input("podaj n: ")
+    if n=="":
+        return PvP2()
+    if PoprawnoscN(n):
+        return PvP2()
+    n=int(n)
     zgadywana = []
-    zgadywana1 = []
-    x=int(input("Podaj liczbe n-cyfrową (zawodnik 2), która bedzie zgadywana przez przeciwnika (zawodnika 1): "))
-    for i in range(n):
-        zgadywana.append(x // 10 ** (n - i - 1))
-        x = x - (x // 10 ** (n - i - 1)) * (10 ** (n - i - 1))
-    b = Odgadywanie(zgadywana, n, a)[0]
-    x = int(input("Podaj liczbe n-cyfrową (zawodnik 1), która bedzie zgadywana przez przeciwnika (zawodnik 2): "))
-    for i in range(n):
-        zgadywana.append(x // 10 ** (n - i - 1))
-        x = x - (x // 10 ** (n - i - 1)) * (10 ** (n - i - 1))
-    c = Odgadywanie(zgadywana1, n, a)[0]
+    x=input("Podaj liczbe n-cyfrową (zawodnik 2), która bedzie zgadywana przez przeciwnika (zawodnika 1): ")
+    os.system('clear')
+    if PoprawnoscProby(x, n):
+        return PvP2()
+    zgadywana=list(str(x))
+    for i in range(len(zgadywana)):
+        zgadywana[i]=int(zgadywana[i])
+    b = Odgadywanie(zgadywana, n, 0)[0]
+
+    def PvP2_2():
+        zgadywana1=[]
+        x = input("Podaj liczbe n-cyfrową (zawodnik 1), która bedzie zgadywana przez przeciwnika (zawodnik 2): ")
+        os.system('clear')
+        if PoprawnoscProby(x, n):
+            return PvP2_2()
+        zgadywana1=list(str(x))
+        for i in range(len(zgadywana1)):
+            zgadywana1[i]=int(zgadywana1[i])
+        return Odgadywanie(zgadywana1, n, 0)[0]
+    c = PvP2_2()
+
     if (b < c):
         print("Wygrał 1 zawodnik.")
     elif (b == c):
