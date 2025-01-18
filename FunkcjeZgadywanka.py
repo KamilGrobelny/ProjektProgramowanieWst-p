@@ -70,7 +70,7 @@ def PoprawnoscProby(proba: list, n: int):
             return True
 
 def InfoZwrotne(x: list, zgadywana: list, n: int):
-     """Funkcja zwraca listę z wartościami cyfr na właściwych oraz niewłaściwych miejscach.
+    """Funkcja zwraca listę z wartościami cyfr na właściwych oraz niewłaściwych miejscach.
     
     Lista[0] zawiera liczbę cyfr na właściwych miejscach.
     Lista[1] zawiera liczbę cyfr na niewłaściwych miejscach.
@@ -91,8 +91,7 @@ def InfoZwrotne(x: list, zgadywana: list, n: int):
     if x==zgadywana:
         wlasciwe = n
         niewlasciwe = 0
-        Tablica = [wlasciwe, niewlasciwe]
-        return Tablica
+        return [wlasciwe, niewlasciwe]
     else:
         KopiaZgadywana = []
         for i in zgadywana:
@@ -113,8 +112,7 @@ def InfoZwrotne(x: list, zgadywana: list, n: int):
                     x[k]="&"
                     KopiaZgadywana[l]="%"
                     break
-        Tablica = [wlasciwe, niewlasciwe]
-        return Tablica
+        return [wlasciwe, niewlasciwe]
               
 def Odgadywanie(zgadywana: list, n: int, krok: int):
     """Funkcja umożliwia odgadywanie szyfru przez użytkownika. Zwraca listę: [liczba kroków, True], 
@@ -226,7 +224,7 @@ def PvP1 ():
         print("Wygrał 2 zawodnik.")
 
 def PvP2 ():
-     """Funkcja umożliwia grę dwóch graczy (człowiek vs człowiek), w której obaj gracze podają swoje szyfry, a następnie próbują je odgadnąć.
+    """Funkcja umożliwia grę dwóch graczy (człowiek vs człowiek), w której obaj gracze podają swoje szyfry, a następnie próbują je odgadnąć.
     
     Gra przebiega w następujący sposób:
     1. Gracze podają długość szyfru 'n' (gdzie 'n' musi być liczbą całkowitą z przedziału [1, 10]). (długość obowiązuje obydwu graczy)
@@ -240,10 +238,7 @@ def PvP2 ():
     "Podaj n: "
     # Gracze podają długość szyfru, np. 4.
     # Drugi zawodnik podaje swój szyfr, a potem pierwszy zawodnik zgaduje.
-    # Po kilku próbach wynik gry jest ogłoszony (kto wygrał lub czy był remis).
-    
-    Uwaga:
-    # Dziękuję za uwagę. 
+    # Po kilku próbach wynik gry jest ogłoszony (kto wygrał lub czy był remis). 
     """
     n = input("podaj n: ")
     if n=="":
@@ -251,19 +246,22 @@ def PvP2 ():
     if PoprawnoscN(n):
         return PvP2()
     n=int(n)
-    zgadywana = []
-    x=input("Podaj liczbe n-cyfrową (zawodnik 2), która bedzie zgadywana przez przeciwnika (zawodnika 1): ")
-    os.system('clear')
-    if PoprawnoscProby(x, n):
-        return PvP2()
-    zgadywana=list(str(x))
-    for i in range(len(zgadywana)):
-        zgadywana[i]=int(zgadywana[i])
-    b = Odgadywanie(zgadywana, n, 0)[0]
+
+    def PvP2_1():
+        zgadywana = []
+        x=input(f"Podaj liczbe {n}-cyfrową (zawodnik 2), która bedzie zgadywana przez przeciwnika (zawodnika 1): ")
+        os.system('clear')
+        if PoprawnoscProby(x, n):
+            return PvP2_1()
+        zgadywana=list(str(x))
+        for i in range(len(zgadywana)):
+            zgadywana[i]=int(zgadywana[i])
+        return Odgadywanie(zgadywana, n, 0)[0]
+    b = PvP2_1()
 
     def PvP2_2():
         zgadywana1=[]
-        x = input("Podaj liczbe n-cyfrową (zawodnik 1), która bedzie zgadywana przez przeciwnika (zawodnik 2): ")
+        x = input(f"Podaj liczbe {n}-cyfrową (zawodnik 1), która bedzie zgadywana przez przeciwnika (zawodnik 2): ")
         os.system('clear')
         if PoprawnoscProby(x, n):
             return PvP2_2()
