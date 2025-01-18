@@ -1,20 +1,9 @@
 #Player vs computer, tylko czlowiek zgaduje
 """
-v1.0.0
-komentarze dla kolegów:
-///bynio7
-można obecny kod potraktować jako bazę pod rozszerzone wersje gry: gracz vs gracz, i komputer vs gracz (komputer odgaduje)
-rzeczy do zrobienia:
-1. Wymyślić i zaimplementować algorytmy zgadywania dla komputera
-    * w tym celu trzeba zrobić osobną funkcję podobną do Odgadywanie(zgadywana, n), ale zawierającą algorytmy
-2. stworzyć proste menu do wyboru rodzaju gry (pvc, pvp, cvp)
-Kod pod funkcjami można łatwo przerobić na pvp
-###
-
-///miejsce na kolejny komentarz
+v1.0.1
 """
 from random import randint
-def PoprawnoscProby(proba, n, zgadywana):
+def PoprawnoscProby(proba: list, n: int, zgadywana: list):
     """Funkcja sprawdza czy odgadnięcie podane przez użytkownika jest poprawnie wyrażone: odpowiednia długość n oraz same cyfry
     jeżeli dane nie są poprawnie  wyrażone to funkcja zwraca True"""
     if len(proba) > n:
@@ -28,7 +17,7 @@ def PoprawnoscProby(proba, n, zgadywana):
             print("W szyfrze mogą być tylko cyfry, spróbuj jeszcze raz")
             return True
 
-def InfoZwrotne(x, zgadywana, n):
+def InfoZwrotne(x: list, zgadywana: list, n: int):
     """Funkcja zwraca tablicę z wartościami cyfr na właściwych oraz niewłaściwych miejscach
     Tablica[0] to cyfry na właściwych miejscach
     Tablica[1] to cyfry na niewłaściwych miejscach
@@ -61,7 +50,7 @@ def InfoZwrotne(x, zgadywana, n):
         Tablica = [wlasciwe, niewlasciwe]
         return Tablica
               
-def Odgadywanie(zgadywana, n):
+def Odgadywanie(zgadywana: list, n: int):
     """Funkcja pobiera od użytkownika próbę. Za pomocą funkcji InfoZwrotne(x, zgadywana, n)
     sprawdza czy próba == szyfr, a jeśli nie to zwraca informację ile cyfr jest na właściwych i niewłaściwych miejscach"""
     proba = str(input("zgaduj: "))
@@ -78,14 +67,21 @@ def Odgadywanie(zgadywana, n):
         print(f"na niewłaściwych miejscach: {Wartosci[1]}")
         return Odgadywanie(zgadywana, n)
 
-#Player vs Computer
-n = int(input("podaj n: "))
-
-if (n > 10) or (n < 1):
-    raise ValueError("n musi być liczbą całowitą z przedziału [1, 10]")
-zgadywana = []
-for i in range(n):
-   zgadywana.append(randint(0, 9))
-if Odgadywanie(zgadywana, n):
-    print("wygrałeś")
+def PvC():
+    """Funkcja umożliwia grę człowieka z komputerem, człowiek zgaduje szyfr komputera"""
+    n = input("podaj n: ")
+    for i in range(len(n)):
+        if ord(n[i])>57 or ord(n[i]) < 48:
+            print("n musi być liczbą całkowitą, podaj n ponownie")
+            return PvC()
+    n=int(n)
+    if (n > 10) or (n < 1):
+        print("n musi być liczbą całowitą z przedziału [1, 10], podaj n ponownie")
+        return PvC()
+    zgadywana = []
+    zgadywana.append(randint(0, 9))
+    if Odgadywanie(zgadywana, n):
+        print("wygrałeś")
+        return 0
+PvC()
 #End
