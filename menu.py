@@ -1,22 +1,26 @@
 from random import randint
 import FunkcjeZgadywanka as FZ
-
-while(True):
+X = True
+while(X):
     opcja=int(input("Wybierz opcje gry: \n 1 - zgadujesz szyfr wymyślony przez komputer \n 2 - komputer zgaduje szyfr wymyślony przez Ciebie \n 3 - grasz z drugim graczem \n"))
     if (opcja==1):
         FZ.PvC()
+        X=False
         break
     if (opcja==2):
         print("czekamy na Janka")
+        X=False
         break
     if (opcja==3):
         while(True):
             opcja1 = int(input("Wybierz opcje gry: \n 1 - komputer losuje wam liczby \n 2 - sami wybieracie sobie liczby dla przecinika \n"))
             if (opcja1 == 1):
                 FZ.PvP1()
+                X=False
                 break
             if (opcja1 == 2):
                 FZ.PvP2()
+                X=False
                 break
             else:
                 print("Wybierz 1 lub 2.")
