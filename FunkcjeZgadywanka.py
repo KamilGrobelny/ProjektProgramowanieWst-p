@@ -74,7 +74,7 @@ def Odgadywanie(zgadywana: list, n: int, krok: int):
 
 def PvC():
     """Funkcja umożliwia grę człowieka z komputerem, człowiek zgaduje szyfr komputera"""
-    n = input("podaj n: ")
+    n = input("podaj ilucyfrowy ma być szyfr: ")
     for i in range(len(n)):
         if ord(n[i])>57 or ord(n[i]) < 48:
             print("n musi być liczbą całkowitą, podaj n ponownie")
@@ -90,7 +90,8 @@ def PvC():
         return 0
 
 def PvP1 ():
-    n = int(input("podaj n: "))
+    """Funkcja umożliwia grę człowieka z człowiekiem (komputer losuje szyfry)"""
+    n = int(input("podaj ilucyfrowy ma być szyfr: "))
     a = 0
     if (n > 10) or (n < 1):
         raise ValueError("n musi być liczbą całowitą z przedziału [1, 10]")
@@ -111,7 +112,8 @@ def PvP1 ():
         print("Wygrał 2 zawodnik.")
 
 def PvP2 ():
-    n = int(input("podaj n: "))
+    """Funkcja umożliwia grę człowieka z człowiekiem (gracze wybieraja sami szyfr dla przeciwnika)"""
+    n = int(input("podaj ilucyfrowy ma być szyfr: "))
     a = 0
     if (n > 10) or (n < 1):
         raise ValueError("n musi być liczbą całowitą z przedziału [1, 10]")
