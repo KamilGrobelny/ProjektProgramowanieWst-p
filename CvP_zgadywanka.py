@@ -1,10 +1,10 @@
-# Computer vs Player dla 4 powinien zgadtywać w 16 ruchach"
+# Computer vs Player dla 4 powinien zgadywać w 16 ruchach, trzeba printa dobrze zrobić"
 
 haslo = ['x', 'x', 'x', 'x']
 dobre_liczby = 0
 liczby_na_swoim_miejscu = 0
 ilosc_ruchow = 0
-zapychacz = 0
+zapychacz = 0 #liczba, o której wiemy, że jej nie ma
 
 n = int(input("podaj n: "))
 if (n > 10) or (n < 1):
@@ -17,9 +17,7 @@ def szukanie_liczb():
     mozliwe_liczby=[]
     dostepne_liczby=[0,1,2,3,4,5,6,7,8,9]
     for i in range(0, 9):
-        if len(mozliwe_liczby)==4 or len(dostepne_liczby)==4:
-            if ilosc_ruchow==4:
-                zapychacz=5
+        if len(mozliwe_liczby)==4
             return mozliwe_liczby
         proba = int(str(i) * n)
         print(proba)
