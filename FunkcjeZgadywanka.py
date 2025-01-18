@@ -88,3 +88,48 @@ def PvC():
         zgadywana.append(randint(0, 9))
     if Odgadywanie(zgadywana, n, 0)[1]:
         return 0
+
+def PvP1 ():
+    n = int(input("podaj n: "))
+    a = 0
+    if (n > 10) or (n < 1):
+        raise ValueError("n musi być liczbą całowitą z przedziału [1, 10]")
+    zgadywana = []
+    zgadywana1 = []
+    for i in range(n):
+        zgadywana.append(randint(0, 9))
+    b = Odgadywanie(zgadywana, n, a)[0]
+    print("ZMIANA ZAWODNIKA.")
+    for i in range(n):
+        zgadywana1.append(randint(0, 9))
+    c = Odgadywanie(zgadywana1, n, a)[0]
+    if (b < c):
+        print("Wygrał 1 zawodnik.")
+    elif (b == c):
+        print("Remis")
+    else:
+        print("Wygrał 2 zawodnik.")
+
+def PvP2 ():
+    n = int(input("podaj n: "))
+    a = 0
+    if (n > 10) or (n < 1):
+        raise ValueError("n musi być liczbą całowitą z przedziału [1, 10]")
+    zgadywana = []
+    zgadywana1 = []
+    x=int(input("Podaj liczbe n-cyfrową (zawodnik 2), która bedzie zgadywana przez przeciwnika (zawodnika 1): "))
+    for i in range(n):
+        zgadywana.append(x // 10 ** (n - i - 1))
+        x = x - (x // 10 ** (n - i - 1)) * (10 ** (n - i - 1))
+    b = Odgadywanie(zgadywana, n, a)[0]
+    x = int(input("Podaj liczbe n-cyfrową (zawodnik 1), która bedzie zgadywana przez przeciwnika (zawodnik 2): "))
+    for i in range(n):
+        zgadywana.append(x // 10 ** (n - i - 1))
+        x = x - (x // 10 ** (n - i - 1)) * (10 ** (n - i - 1))
+    c = Odgadywanie(zgadywana1, n, a)[0]
+    if (b < c):
+        print("Wygrał 1 zawodnik.")
+    elif (b == c):
+        print("Remis")
+    else:
+        print("Wygrał 2 zawodnik.")
