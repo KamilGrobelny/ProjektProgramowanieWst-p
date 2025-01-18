@@ -1,5 +1,5 @@
 from random import randint
-import funkcje as FZ
+import FunkcjeZgadywanka as FZ
 
 opcja=int(input("Wybierz opcje gry: \n 1 - zgadujesz szyfr wymyślony przez komputer \n 2 - komputer zgaduje szyfr wymyślony przez Ciebie \n 3 - grasz z drugim graczem \n"))
 if (opcja==1):
