@@ -91,6 +91,7 @@ def InfoZwrotne(x: list, zgadywana: list, n: int):
     if x==zgadywana:
         wlasciwe = n
         niewlasciwe = 0
+        #print(wlasciwe, niewlasciwe) # na czas testów, potem wywalić
         return [wlasciwe, niewlasciwe]
     else:
         KopiaZgadywana = []
@@ -112,6 +113,7 @@ def InfoZwrotne(x: list, zgadywana: list, n: int):
                     x[k]="&"
                     KopiaZgadywana[l]="%"
                     break
+        #print(wlasciwe, niewlasciwe) # na czas testów potem wywalić
         return [wlasciwe, niewlasciwe]
               
 def Odgadywanie(zgadywana: list, n: int, krok: int):
