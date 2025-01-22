@@ -69,9 +69,9 @@ def PoprawnoscProby(proba: list, n: int):
             print("W szyfrze mogą być tylko cyfry, spróbuj jeszcze raz")
             return True
 
-def InfoZwrotne(x: list, zgadywana: list, n: int):
+def InfoZwrotne(x: list[int], zgadywana: list[int], n: int):
     """Funkcja zwraca listę z wartościami cyfr na właściwych oraz niewłaściwych miejscach.
-    
+    WAŻNE - po wywołaniu tej funkcji należy zwiększyć liczbę podjętych przez drugiego gracza prób o 1
     Lista[0] zawiera liczbę cyfr na właściwych miejscach.
     Lista[1] zawiera liczbę cyfr na niewłaściwych miejscach.
     
@@ -91,7 +91,6 @@ def InfoZwrotne(x: list, zgadywana: list, n: int):
     if x==zgadywana:
         wlasciwe = n
         niewlasciwe = 0
-        #print(wlasciwe, niewlasciwe) # na czas testów, potem wywalić
         return [wlasciwe, niewlasciwe]
     else:
         KopiaZgadywana = []
@@ -113,7 +112,6 @@ def InfoZwrotne(x: list, zgadywana: list, n: int):
                     x[k]="&"
                     KopiaZgadywana[l]="%"
                     break
-        #print(wlasciwe, niewlasciwe) # na czas testów potem wywalić
         return [wlasciwe, niewlasciwe]
               
 def Odgadywanie(zgadywana: list, n: int, krok: int):
