@@ -1,6 +1,24 @@
 from random import randint
 import os
 
+def PoprawnoscInformacji(wartosc1: str, wartosc2: str, n: int):
+        """Funkcja zwraca False gdy informacja zwrotna nie jest zgodna z oczekiwaniami: wyłącznie cyfry, suma nie większa od n. Zwraca True gdy input jest poprawny"""
+        for i in range(len(wartosc1)):
+            if ord(wartosc1[i])>57 or ord(wartosc1[i]) < 48:
+                print(f"Podana wartość musi zawierać tylko cyfry. Spróbuj ponownie.")
+                return False
+        for i in range(len(wartosc2)):
+            if ord(wartosc2[i])>57 or ord(wartosc2[i]) < 48:
+                print(f"Podana wartość musi zawierać tylko cyfry. Spróbuj ponownie.")
+                return False
+        if wartosc1=='' or wartosc2=='':
+            print("Nie podano co najmniej jednej wartości. Spróbuj ponownie")
+            return False
+        if (int(wartosc1)+int(wartosc2))>n:
+            print(f"Suma podanych wartości nie może być większa od {n}. Spróbuj ponownie.")
+            return False
+        return True
+
 def PoprawnoscN(n: str):
     """
     Funkcja sprawdza, czy wprowadzona przez użytkownika próba jest poprawnie wyrażona:
@@ -8,18 +26,18 @@ def PoprawnoscN(n: str):
     - Czy próba zawiera tylko cyfry.
 
     Parametry:
-    @ n: Ciąg znaków reprezentujący oczekiwaną długość szyfru. Musi być liczbą całkowitą mieszczącą się w przedziale [1, 10].
+    @ n: Ciąg znaków reprezentujący oczekiwaną długość szyfru. Musi być liczbą całkowitą mieszczącą się w przedziale [1, 20].
 
     Zwraca:
     @ True: Jeśli próba jest niepoprawna (zawiera coś innego niż liczby lub liczba jest poza zakresem).
-    @ False: Jeśli dane są poprawne (długość jest liczbą całkowitą w przedziale [1, 10]).
+    @ False: Jeśli dane są poprawne (długość jest liczbą całkowitą w przedziale [1, 20]).
 
     Przykłady:
     >>> PoprawnoscN("abcd")
     "n musi być liczbą całkowitą, podaj n ponownie"  
     
     >>> PoprawnoscN("28")
-    "n musi być liczbą całowitą z przedziału [1, 10], podaj n ponownie"  
+    "n musi być liczbą całowitą z przedziału [1, 20], podaj n ponownie"  
     
     >>> PoprawnoscN("5")
     False  # poprawna próba :)
@@ -29,13 +47,12 @@ def PoprawnoscN(n: str):
             print("n musi być liczbą całkowitą, podaj n ponownie")
             return True
     n=int(n)
-    if (n > 10) or (n < 1):
-        print("n musi być liczbą całowitą z przedziału [1, 10], podaj n ponownie")
+    if (n > 20) or (n < 1):
+        print("n musi być liczbą całowitą z przedziału [1, 20], podaj n ponownie")
         return True
 
-def PoprawnoscProby(proba: list, n: int):
-    """Funkcja sprawdza, czy odgadnięcie podane przez użytkownika jest poprawnie wyrażone: czy ma odpowiednią długość 
-    oraz czy zawiera tylko cyfry. Jeśli dane nie są poprawne, funkcja zwraca True, sygnalizując błąd.
+def PoprawnoscProby(proba: list[str], n: int):
+    """Funkcja zwraca True jeżeli odgadnięcie nie jest poprawnie wyrażone oraz False jeżeli odgadnięcie zostało podane poprawnie.
 
     Funkcja sprawdza, czy długość próby jest zgodna z oczekiwaną długością szyfru (n) oraz czy wszystkie elementy w próbie 
     to cyfry. Jeśli którakolwiek z tych dwoch rzeczy jest niezgodna, funkcja zwraca komunikat o błędzie.
@@ -68,6 +85,7 @@ def PoprawnoscProby(proba: list, n: int):
         if ord(i)>57 or ord(i) < 48:
             print("W szyfrze mogą być tylko cyfry, spróbuj jeszcze raz")
             return True
+    return False
 
 def InfoZwrotne(x: list[int], zgadywana: list[int], n: int):
     """Funkcja zwraca listę z wartościami cyfr na właściwych oraz niewłaściwych miejscach.
@@ -114,7 +132,7 @@ def InfoZwrotne(x: list[int], zgadywana: list[int], n: int):
                     break
         return [wlasciwe, niewlasciwe]
               
-def Odgadywanie(zgadywana: list, n: int, krok: int):
+def Odgadywanie(zgadywana: list[int], n: int, krok: int, Tryb_Gry: int, nazwa1: str, nazwa2: str):
     """Funkcja umożliwia odgadywanie szyfru przez użytkownika. Zwraca listę: [liczba kroków, True], 
     gdzie liczba kroków to liczba prób, które użytkownik podjął, a True oznacza, że udało się odgadnąć szyfr.
 
@@ -127,29 +145,41 @@ def Odgadywanie(zgadywana: list, n: int, krok: int):
     @ zgadywana: Lista reprezentująca szyfr, który należy odgadnąć. Jest to lista cyfr o długości 'n'.
     @ n: Długość szyfru, która musi zawierać się w przedziale [1, 10].
     @ krok: Liczba dotychczasowych prób, zaczyna się od 0, a po każdej próbie zwiększa się o 1.
-
+    @ Tryb_Gry: 1 - gracz automatycznie otrzymuje informację zwrotną, 2 - gracz otrzymuje informację zwrotną od drugiego gracza (Tylko w trybie PvP2)
+    @ nazwa1, nazwa2: nazwy graczy, nazwa1 to nazwa odgadującego, nazwa2 to nazwa gracza, którego szyfr należy odgadnąć.
     Przykład:
-    >>> Odgadywanie([1, 4, 3], 3, 0)
+    >>> Odgadywanie([1, 4, 3], 3, 0, 1, nazwa1, nazwa2)
     Podaj swoje odgadnięcie: 143
     Liczba cyfr występujących w szyfrze na właściwych miejscach: 3
-    wygrałeś, Twoja liczba odgadnięć: 1
+    {nazwa1} Odgadłeś szyfr! Twoja liczba odgadnięć: 1
     [1, True]
     """
-    proba = str(input("Podaj swoje odgadnięcie: "))
+    proba = str(input(f"{nazwa1} Podaj swoje odgadnięcie: "))
     x = list(str(proba))
     if PoprawnoscProby(x, n):
-        return Odgadywanie(zgadywana, n, krok)
+        return Odgadywanie(zgadywana, n, krok, Tryb_Gry, nazwa1, nazwa2)
     for i in range(len(x)):
         x[i]=int(x[i])
-    Wartosci = InfoZwrotne(x, zgadywana, n)
+    if Tryb_Gry==1:
+        Wartosci = InfoZwrotne(x, zgadywana, n)
+    else:
+        while(True):
+            Wartosci=[input(f"{nazwa2} Podaj liczbę cyfr na właściwych miejscach: "), input(f"{nazwa2} Podaj liczbę cyfr na niewłaściwych miejscach: ")]
+            if PoprawnoscInformacji(Wartosci[0], Wartosci[1], n):
+                Wartosci[0]=int(Wartosci[0])
+                Wartosci[1]=int(Wartosci[1])
+                break
     krok+=1
     if Wartosci[0]==n:
-        print(f"Odgadłeś szyfr! Twoja liczba odgadnięć: {krok}")
+        print(f"{nazwa1} Odgadłeś szyfr! Twoja liczba odgadnięć: {krok}")
         return [krok, True]
     else:
-        print(f"Liczba cyfr występujących w szyfrze na właściwych miejscach: {Wartosci[0]}")
-        print(f"Liczba cyfr występujących w szyfrze, ale które nie są na właściwych miejscach: {Wartosci[1]}")
-        return Odgadywanie(zgadywana, n, krok)
+        if Tryb_Gry==1:
+            print(f"Liczba cyfr występujących w szyfrze na właściwych miejscach: {Wartosci[0]}")
+            print(f"Liczba cyfr występujących w szyfrze, ale które nie są na właściwych miejscach: {Wartosci[1]}")
+            return Odgadywanie(zgadywana, n, krok, Tryb_Gry, nazwa1, nazwa2)
+        else:
+            return Odgadywanie(zgadywana, n, krok, Tryb_Gry, nazwa1, nazwa2)
 
 def PvC():
     """Funkcja umożliwia grę człowieka z komputerem, gdzie człowiek zgaduje szyfr komputera.
@@ -170,19 +200,18 @@ def PvC():
     # Następnie użytkownik podaje długość szyfru, np. 4.
     # Komputer generuje szyfr, a użytkownik zgaduje itd.
     """
-    n = input("podaj n: ")
-    if n=="":
-        return PvC()
-    if PoprawnoscN(n):
-        return PvC()
+    while(True):
+        n = input("Podaj n [1, 20]: ")
+        if not(n=="" or PoprawnoscN(n)):
+            break
     n=int(n)
     zgadywana = []
     for i in range (n):
         zgadywana.append(randint(0, 9))
-    if Odgadywanie(zgadywana, n, 0)[1]:
+    if Odgadywanie(zgadywana, n, 0, 1, '', '')[1]:
         return 0
 
-def PvP1 ():
+def PvP1 (nick1: str, nick2: str):
     """Funkcja umożliwia grę dwóch graczy (ludzi), gdzie komputer generuje szyfry dla obu graczy.
     
     Gra przebiega w następujący sposób:
@@ -196,35 +225,33 @@ def PvP1 ():
     >>> PvP1()
     "Podaj n: "
     # Następnie użytkownicy podają długość szyfru, np. 4.
-    # Komputer generuje szyfry dla obu graczy, a następnie gracze próbują zgadnąć szyfr przeciwnika.
+    # Komputer generuje szyfry dla obu graczy, a następnie gracze próbują zgadnąć szyfr.
     # Po kilku próbach wynik gry jest ogłoszony (kto wygrał lub czy był remis).
     
     """
-    n = input("podaj n: ")
-    if n=="":
-        return PvP1()
-    a = 0
-    if PoprawnoscN(n):
-        return PvP1()
+    while(True):
+        n = input("Podaj n [1, 20]: ")
+        if not(n=="" or PoprawnoscN(n)):
+            break
     n=int(n)
     zgadywana = []
     zgadywana1 = []
     for i in range(n):
         zgadywana.append(randint(0, 9))
-    b = Odgadywanie(zgadywana, n, a)[0]
+    b = Odgadywanie(zgadywana, n, 0, 1, nick1, nick2)[0]
     print("ZMIANA ZAWODNIKA.")
     for i in range(n):
         zgadywana1.append(randint(0, 9))
-    c = Odgadywanie(zgadywana1, n, a)[0]
+    c = Odgadywanie(zgadywana1, n, 0, 1, nick2, nick1)[0]
     if (b < c):
-        print("Wygrał 1 zawodnik.")
+        print(f"Wygrał {nick1}")
     elif (b == c):
         print("Remis")
     else:
-        print("Wygrał 2 zawodnik.")
+        print(f"Wygrał {nick2}")
 
-def PvP2 ():
-    """Funkcja umożliwia grę dwóch graczy (człowiek vs człowiek), w której obaj gracze podają swoje szyfry, a następnie próbują je odgadnąć.
+def PvP2 (Tryb_Gry: int, nick1: str, nick2: str):
+    """Funkcja umożliwia grę dwóch graczy (człowiek vs człowiek), w której gracze wymyślają szyfry, a następnie próbują je wzajemnie odgadnąć.
     
     Gra przebiega w następujący sposób:
     1. Gracze podają długość szyfru 'n' (gdzie 'n' musi być liczbą całkowitą z przedziału [1, 10]). (długość obowiązuje obydwu graczy)
@@ -237,43 +264,182 @@ def PvP2 ():
     >>> PvP2()
     "Podaj n: "
     # Gracze podają długość szyfru, np. 4.
-    # Drugi zawodnik podaje swój szyfr, a potem pierwszy zawodnik zgaduje.
+    # Drugi zawodnik podaje swój szyfr, a potem pierwszy zawodnik zgaduje. Następnie następuje zamiana ról.
     # Po kilku próbach wynik gry jest ogłoszony (kto wygrał lub czy był remis). 
     """
-    n = input("podaj n: ")
-    if n=="":
-        return PvP2()
-    if PoprawnoscN(n):
-        return PvP2()
+    while(True):
+        n = input("Podaj n [1, 20]: ")
+        if not(n=="" or PoprawnoscN(n)):
+            break
     n=int(n)
 
     def PvP2_1():
         zgadywana = []
-        x=input(f"Podaj liczbe {n}-cyfrową (zawodnik 2), która bedzie zgadywana przez przeciwnika (zawodnika 1): ")
+        x=input(f"{nick2} Podaj liczbe {n}-cyfrową, która bedzie zgadywana przez przeciwnika {nick1}: ")
         os.system('clear')
         if PoprawnoscProby(x, n):
             return PvP2_1()
         zgadywana=list(str(x))
         for i in range(len(zgadywana)):
             zgadywana[i]=int(zgadywana[i])
-        return Odgadywanie(zgadywana, n, 0)[0]
+        return Odgadywanie(zgadywana, n, 0, Tryb_Gry, nick1, nick2)[0]
     b = PvP2_1()
 
     def PvP2_2():
         zgadywana1=[]
-        x = input(f"Podaj liczbe {n}-cyfrową (zawodnik 1), która bedzie zgadywana przez przeciwnika (zawodnik 2): ")
+        x = input(f"{nick1} Podaj liczbe {n}-cyfrową, która bedzie zgadywana przez przeciwnika {nick2}: ")
         os.system('clear')
         if PoprawnoscProby(x, n):
             return PvP2_2()
         zgadywana1=list(str(x))
         for i in range(len(zgadywana1)):
             zgadywana1[i]=int(zgadywana1[i])
-        return Odgadywanie(zgadywana1, n, 0)[0]
+        return Odgadywanie(zgadywana1, n, 0, Tryb_Gry, nick2, nick1)[0]
     c = PvP2_2()
 
     if (b < c):
-        print("Wygrał 1 zawodnik.")
+        print(f"Wygrał {nick1}")
     elif (b == c):
         print("Remis")
     else:
-        print("Wygrał 2 zawodnik.")
+        print(f"Wygrał {nick2}")
+#Tu brakuje dokumentacji:
+def CvP(Tryb_Gry: int):
+    """Dokumentacja (tryb_gry==1 - komputer korzysta z funkcji InfoZwrotne, 2 - użytkownik sam podaje informację zwrotną (może kłamać))"""
+    while(True):
+        n = input("Podaj n [1, 20]: ")
+        if not(n=="" or PoprawnoscN(n)):
+            break
+    n=int(n)
+    
+    def szukanie_liczb(zgadywana: list[int]):
+        """Funkcja zwraca listę liczb, które występują w szyfrze na podstawie dostępnych informacji podanych przez użytkownika lub przez funkcję InfoZwrotne"""
+        ilosc_ruchow = 0
+        zapychacz1 = [7, 0]
+        zapychacz2 = [8, 0]
+        mozliwe_liczby = []
+        reszta = n
+        dostepne_liczby = list(range(10))  
+        for i in dostepne_liczby:
+            if len(mozliwe_liczby)==n:
+                return mozliwe_liczby, ilosc_ruchow, zapychacz1, zapychacz2
+            elif i == 9:
+                mozliwe_liczby.extend([9] * reszta)
+                return mozliwe_liczby, ilosc_ruchow, zapychacz1, zapychacz2
+            proba = [i] * n
+            print("Próba:", "".join(map(str, proba)))
+            if Tryb_Gry==1:
+                tablica = InfoZwrotne(proba, zgadywana, n)
+            else:
+                while(True):
+                    tablica=[input("Podaj liczbę cyfr na właściwych miejscach: "), input("Podaj liczbę cyfr na niewłaściwych miejscach: ")]
+                    if PoprawnoscInformacji(tablica[0], tablica[1], n):
+                        tablica[0]=int(tablica[0])
+                        tablica[1]=int(tablica[1])
+                        break
+            ilosc_ruchow += 1
+            if tablica[1] > 0:
+                mozliwe_liczby.extend([i] * tablica[1])
+                reszta-=tablica[1]
+            if tablica[0] > 0:
+                mozliwe_liczby.extend([i] * tablica[0])
+                reszta-=tablica[0]
+                if i==zapychacz1[0]:
+                    zapychacz1[1]+=tablica[0]
+                elif i==zapychacz2[0]:
+                    zapychacz2[1]+=tablica[0]
+        return mozliwe_liczby, ilosc_ruchow, zapychacz1, zapychacz2
+    
+    def szukanie_miejsca(haslo: list[int], mozliwe_liczby: list[int], zgadywana: list[int], ilosc_ruchow: int, zapychacz1: list[int], zapychacz2: list[int]):
+        """Funkcja ustala miejsca dla poprawnych liczb w haśle."""
+        miejsca = list(range(n))
+        def funkcja_pomocnicza(haslo, zgadywana, n, ilosc_ruchow):
+            """Ta funkcja odpowiada za zwrócenie ostatecznej próby, końcowej liczby kroków oraz informacji czy udało się odgadnąć szyfr True==Udało się, False==Nie udało się"""
+            ilosc_ruchow+=1
+            if Tryb_Gry==1:
+                if InfoZwrotne(haslo, zgadywana, n)[0]==n:
+                    print("Próba:", "".join(map(str, haslo)))
+                    return haslo, ilosc_ruchow, True
+                else:
+                    return haslo, ilosc_ruchow, False
+            else:
+                print("Próba:", "".join(map(str, haslo)))
+                while(True):
+                    tablica=[input("Podaj liczbę cyfr na właściwych miejscach: "), input("Podaj liczbę cyfr na niewłaściwych miejscach: ")]
+                    if PoprawnoscInformacji(tablica[0], tablica[1], n):
+                        tablica[0]=int(tablica[0])
+                        tablica[1]=int(tablica[1])
+                        break
+                if tablica[0]==n and haslo==zgadywana:
+                    return haslo, ilosc_ruchow, True
+                else:
+                    return haslo, ilosc_ruchow, False
+       
+        for liczba in mozliwe_liczby:
+            if liczba == zapychacz1[0]:
+                AktualnyZapychacz=zapychacz2
+            else:
+                AktualnyZapychacz=zapychacz1
+
+            if liczba==mozliwe_liczby[-1]:
+                for miejsce in miejsca:
+                    haslo[miejsce]=liczba
+                return funkcja_pomocnicza(haslo, zgadywana, n, ilosc_ruchow)
+
+            for miejsce in miejsca:
+                if len(miejsca)==1:
+                    haslo[miejsce] = liczba
+                    return funkcja_pomocnicza(haslo, zgadywana, n, ilosc_ruchow)
+                proba = [AktualnyZapychacz[0]] * n
+                proba[miejsce] = liczba
+                print("Próba:", "".join(map(str, proba)))
+                if Tryb_Gry==1:
+                    tablica = InfoZwrotne(proba, zgadywana, n)
+                else:
+                    while(True):
+                        tablica=[input("Podaj liczbę cyfr na właściwych miejscach: "), input("Podaj liczbę cyfr na niewłaściwych miejscach: ")]
+                        if PoprawnoscInformacji(tablica[0], tablica[1], n):
+                            tablica[0]=int(tablica[0])
+                            tablica[1]=int(tablica[1])
+                            break
+                ilosc_ruchow += 1
+                if tablica[0] == 1+AktualnyZapychacz[1]:
+                    haslo[miejsce] = liczba
+                    miejsca.remove(miejsce)  
+                    break
+                elif miejsce==miejsca[-2]:
+                    haslo[miejsca[-1]]=liczba
+                    miejsca.remove(miejsca[-1])
+                    break
+        return funkcja_pomocnicza(haslo, zgadywana, n, ilosc_ruchow)
+
+    def zgadywanie(zgadywana: list, n: int):
+        """Główna funkcja obsługująca proces zgadywania.""" 
+        IZ = szukanie_liczb(zgadywana) #IZ - Informacja zwrotna
+        krok = IZ[1]
+        if len(set(IZ[0]))==1:
+            haslo = [IZ[0][0]] * n
+            if haslo == zgadywana:
+                return haslo, krok, True
+            else:
+                return haslo, krok, False
+        else:
+            haslo = [ int(IZ[2][0]) ] * n
+            x = szukanie_miejsca(haslo, IZ[0], zgadywana, IZ[1], IZ[2], IZ[3])
+            haslo = x[0]
+            krok = x[1]
+        return haslo, krok, x[2]
+    
+    while(True):
+        zgadywana = input("Podaj szyfr: ")
+        if not(PoprawnoscProby(zgadywana, n)):
+            break
+    zgadywana=(list[int](zgadywana))
+    for i in range(n):
+        zgadywana[i]=int(zgadywana[i])
+
+    wynik = zgadywanie(zgadywana, n)
+    if wynik[2]:
+        print(f"Komputer odgadł szyfr: {"".join(map(str, wynik[0]))} w liczbie prób: {wynik[1]}")
+    else:
+        print(f"Komputer nie mógł odgadnąć szyfru, bo podano nieprawdziwą informację zwrotną")

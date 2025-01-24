@@ -1,0 +1,12 @@
+Gra w odgadywanie - instalacja i poprawne uruchamianie gry
+Wymagane programy: Git Bash, Python (zalecana wersja 3.13.1)
+W terminalu Git Bash przejść do pobranego katalagu z projektem
+Jeżeli w katalogu znajduje się wcześniej zainstalowane środowisko wirtualne pythona, należy to środowisko usunąć z katalogu projektu
+Uruchomić skrypt venvinstall.sh :
+$ ./venvinstall.sh
+Uruchamianie gry w terminalu Git Bash, po poprawnym zainstalowaniu środowiska:
+$ ./gra.sh NazwaGracza1 NazwaGracza2
+Bezpośrednio po uruchomieniu gry należy sprawdzić czy skrypt korzysta z zainstalowanego wcześniej środowiska.
+Komunikat jest wysyłany automatycznie:
+Poprawny komunikat: ~/Nazwa_Katalogu_z_Projektem/.venv/Scripts/python
+Podanie nazw graczy jest opcjonalne. Domyślne nazwy to odpowiednio "Gracz 1" i "Gracz 2"
