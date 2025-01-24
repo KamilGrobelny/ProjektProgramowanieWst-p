@@ -3,6 +3,10 @@
 nick1=$1
 nick2=$2
 source .venv/Scripts/activate
-which python
-py menu.py $nick1 $nick2
-deactivate
+sciezka=$(which python)
+if [[ "$sciezka" == *"/.venv/"* ]]; then
+    py menu.py $nick1 $nick2
+    deactivate
+else
+    echo "Środowisko wirtualne nie zostało uruchomione"
+fi

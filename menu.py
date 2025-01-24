@@ -68,4 +68,5 @@ while(dzialanie):
             os.system('clear')
     elif (menu_glowne=='4'):
         break 
-    os.system('clear')
+    else:
+        os.system('clear')
