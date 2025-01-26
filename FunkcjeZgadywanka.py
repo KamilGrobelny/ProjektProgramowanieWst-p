@@ -2,7 +2,39 @@ from random import randint
 import os
 
 def PoprawnoscInformacji(wartosc1: str, wartosc2: str, n: int):
-        """Funkcja zwraca False gdy informacja zwrotna nie jest zgodna z oczekiwaniami: wyłącznie cyfry, suma nie większa od n. Zwraca True gdy input jest poprawny"""
+    """
+    Sprawdza, czy podane wartości informacji zwrotnej są zgodne z oczekiwaniami.
+
+    Funkcja weryfikuje następujące warunki:
+    1. 'wartosc1' i 'wartosc' zawierają wyłącznie cyfry.
+    2. Żadne z podanych wartości nie są puste.
+    3. Suma wartości 'wartosc1' i 'wartosc2' nie przekracza 'n'.
+
+    Argumenty:
+        @ wartosc1: Pierwsza wartość wejściowa (liczba cyfr na właściwych miejscach).
+        @ wartosc2: Druga wartość wejściowa (liczba cyfr na niewłaściwych miejscach).
+        @ n: Długość szyfru.
+
+    Zwraca:
+            -'True'-jeśli podane wartości są poprawne.
+            -'False'-w przeciwnym wypadku, wypisuje odpowiedni komunikat błędu.
+
+    Przykłady:
+        >>> PoprawnoscInformacji(2, 1, 4)
+        True
+        
+        >>> PoprawnoscInformacji(3, 2, 4)
+        Suma podanych wartości nie może być większa od 4. Spróbuj ponownie.
+        False
+        
+        >>> PoprawnoscInformacji(2a, 1, 4)
+        Podana wartość musi zawierać tylko cyfry. Spróbuj ponownie.
+        False
+        
+        >>> PoprawnoscInformacji(1, , 4)
+        Nie podano co najmniej jednej wartości. Spróbuj ponownie.
+        False
+    """
         for i in range(len(wartosc1)):
             if ord(wartosc1[i])>57 or ord(wartosc1[i]) < 48:
                 print(f"Podana wartość musi zawierać tylko cyfry. Spróbuj ponownie.")
@@ -303,9 +335,21 @@ def PvP2 (Tryb_Gry: int, nick1: str, nick2: str):
         print("Remis")
     else:
         print(f"Wygrał {nick2}")
-#Tu brakuje dokumentacji:
 def CvP(Tryb_Gry: int):
-    """Dokumentacja (tryb_gry==1 - komputer korzysta z funkcji InfoZwrotne, 2 - użytkownik sam podaje informację zwrotną (może kłamać))"""
+   """
+    Główna funkcja obsługująca tryb gry CvP-"Computer vs Player".
+    Komputer próbuje odgadnąć szyfr podany przez użytkownika.
+
+    Parametry:
+        Tryb_Gry (int): Wybór trybu gry.
+            @ Tryb 1: Komputer korzysta z funkcji InfoZwrotne, która automatycznie generuje informację zwrotną.
+            @ Tryb 2: Użytkownik ręcznie podaje informację zwrotną, z możliwością kłamania.
+
+    Funkcja:
+        - Prosi użytkownika o długość szyfru 'n' (liczbę cyfr w szyfrze).
+        - Wykorzystuje mechanizm zgadywania oparty na funkcjach 'szukanie_liczb` i `szukanie_miejsca`.
+        - Wyświetla wynik oraz liczbę prób potrzebnych do odgadnięcia.
+    """
     while(True):
         n = input("Podaj n [1, 20]: ")
         if not(n=="" or PoprawnoscN(n)):
@@ -313,7 +357,22 @@ def CvP(Tryb_Gry: int):
     n=int(n)
     
     def szukanie_liczb(zgadywana: list[int]):
-        """Funkcja zwraca listę liczb, które występują w szyfrze na podstawie dostępnych informacji podanych przez użytkownika lub przez funkcję InfoZwrotne"""
+        """
+        Funkcja identyfikuje cyfry, które mogą być częścią szyfru, 
+        na podstawie informacji zwrotnych podanych przez użytkownika lub funkcji InfoZwrotne.
+
+        Argumenty:
+                @ zgadywana: Lista cyfr reprezentująca szyfr, który komputer próbuje odgadnąć.
+
+        Zwraca:
+                @ mozliwe_cyfry: Lista cyfr, które są częścią szyfru.
+                @ liczba_prob: Liczba prób, jakie wykonał komputer.
+                @ zapychacz1: Lista składająca się z cyfry pełniącej rolę zapychacza oraz jej liczby wystąpień.
+                @ zapychacz2: Jak wyżej, dla drugiej cyfry zapychacza.
+        Przykład:
+        >>> szukanie_liczb([2, 0, 3, 1])
+        ([2, 0, 3, 1], 4, [7, 0], [8, 0])
+        """
         ilosc_ruchow = 0
         zapychacz1 = [7, 0]
         zapychacz2 = [8, 0]
@@ -351,10 +410,41 @@ def CvP(Tryb_Gry: int):
         return mozliwe_liczby, ilosc_ruchow, zapychacz1, zapychacz2
     
     def szukanie_miejsca(haslo: list[int], mozliwe_liczby: list[int], zgadywana: list[int], ilosc_ruchow: int, zapychacz1: list[int], zapychacz2: list[int]):
-        """Funkcja ustala miejsca dla poprawnych liczb w haśle."""
+    """
+    Funkcja ustala miejsca dla poprawnych liczb w haśle.
+
+    Wykorzystuje dostępne informacje o możliwych liczbach i ich poprawnych pozycjach,
+    aby wypełnić hasło zgodnie z zasadami gry. Działa w trybie komputer vs gracz (Tryb_Gry == 1)
+    lub w trybie, w którym użytkownik ręcznie podaje informacje zwrotne.
+
+    Parametry:
+        @ haslo: Aktualny stan hasła, w którym niektóre miejsca mogą być jeszcze nieznane.
+        @ mozliwe_liczby: Lista liczb, które mogą występować w haśle.
+        @ zgadywana: Szyfr, który komputer próbuje odgadnąć (w trybie automatycznym).
+        @ ilosc_ruchow: Liczba wykonanych prób zgadywania.
+        @ zapychacz1: Pierwsza liczba zapychająca i licznik jej wystąpień w haśle.
+        @ zapychacz2: Druga liczba zapychająca i licznik jej wystąpień w haśle.
+
+    Zwraca:
+            -Finalny stan hasła po ustaleniu pozycji wszystkich liczb.
+            -Łączną liczbę prób zgadywania.
+            -Czy hasło zostało poprawnie odgadnięte.
+    """
         miejsca = list(range(n))
         def funkcja_pomocnicza(haslo, zgadywana, n, ilosc_ruchow):
-            """Ta funkcja odpowiada za zwrócenie ostatecznej próby, końcowej liczby kroków oraz informacji czy udało się odgadnąć szyfr True==Udało się, False==Nie udało się"""
+        """
+        Funkcja pomocnicza sprawdzająca poprawność odgadnięcia hasła.
+
+        Parametry:
+            @ haslo: Aktualne hasło po kolejnych próbach.
+            @ zgadywana: Szyfr, który komputer próbuje odgadnąć (w trybie automatycznym).
+            @ n: Długość hasła.
+            @ ilosc_ruchow: Liczba prób zgadywania.
+
+        Przykłady:
+            >>> funkcja_pomocnicza([2, 0, 3, 1], [2, 0, 3, 1], 4, 4)
+            ([2, 0, 3, 1], 5, True)
+        """
             ilosc_ruchow+=1
             if Tryb_Gry==1:
                 if InfoZwrotne(haslo, zgadywana, n)[0]==n:
@@ -414,7 +504,24 @@ def CvP(Tryb_Gry: int):
         return funkcja_pomocnicza(haslo, zgadywana, n, ilosc_ruchow)
 
     def zgadywanie(zgadywana: list, n: int):
-        """Główna funkcja obsługująca proces zgadywania.""" 
+    """
+    Główna funkcja obsługująca proces zgadywania szyfru przez komputer.
+    Funkcja łączy procesy szukania możliwych liczb i ustalania ich miejsc.
+    Na podstawie otrzymanej informacji zwrotnej komputer próbuje odgadnąć szyfr.
+
+    Argumenty:
+        @ zgadywana: Lista zawierająca szyfr, który komputer ma odgadnąć.
+        @ n: Długość szyfru.
+
+    Zwraca:
+         -Odgadnięty szyfr (lub przypuszczenie komputera).
+         -Liczba prób potrzebnych do odgadnięcia.
+         -True, jeśli szyfr został poprawnie odgadnięty, False w przeciwnym przypadku.
+
+    Przykład:
+        >>> zgadywanie([2, 0, 3, 1], 4)
+        ([2, 0, 3, 1], 7, True)
+    """
         IZ = szukanie_liczb(zgadywana) #IZ - Informacja zwrotna
         krok = IZ[1]
         if len(set(IZ[0]))==1:
