@@ -5,10 +5,7 @@ Piotr Łubkowski 287368
 Jan Górniak 275437
 Ignacy Grzejda 287375
 
-## Wymagania:
--Python 3 (polecam link: https://www.python.org/downloads/release/python-3131/)
+## Instalacja i wymagania:
+Wszystko znajduje się w pliku instalacja.txt
 
-## Co zrobić żeby pobrać projekt:
-Pobierz plik (tu nazwa pliku w stylu cośtam.sh)
-
-
+## Opis projektu: 
