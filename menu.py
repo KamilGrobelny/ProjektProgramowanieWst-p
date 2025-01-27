@@ -11,23 +11,25 @@ if nick1=='':
 if nick2=='':
     nick2="Gracz 2"
 dzialanie = True
+print("-- Gra w odgadywanie -- \n Gracz odgaduje szyfr przeciwnika, w tym celu korzysta z informacji zwrotnej podawanej po podjęciu próby. \n Należy pamiętać, że zbiory liczb właściwych i niewłaściwych są rozłączne w danej próbie.")
+
 while(dzialanie):
-    menu_glowne=input("Wybierz opcje gry: \n 1 - zgadujesz szyfr wymyślony przez komputer \n 2 - komputer zgaduje szyfr wymyślony przez Ciebie \n 3 - grasz z drugim graczem \n 4 - zakończ program \n Wybór: ")
+    menu_glowne=input("\n Wybierz opcje gry: \n 1 - zgadujesz szyfr wymyślony przez komputer \n 2 - komputer zgaduje szyfr wymyślony przez Ciebie \n 3 - grasz z drugim graczem \n 4 - zakończ program \n Wybór: ")
     if (menu_glowne=='1'):
-        print("Tryb gry: gracz kontra komputer")
-        FZ.PvC()
+        print("Tryb gry: gracz kontra komputer \n")
+        FZ.PvC(nick1)
         break
     elif (menu_glowne=='2'):
-        print("Tryb gry: komputer kontra gracz")
+        print("\n Tryb gry: komputer kontra gracz")
         while(True):
             menu_CvP=input("Wybierz opcje gry: \n 1 - komputer automatycznie otrzymuje informację zwrotną \n 2 - Gracz samodzielnie podaje informację zwrotną komputerowi \n 3 - Zmień tryb gry \n Wybór: ")
             if(menu_CvP=='1'):
-                print("Tryb gry: komputer kontra gracz (komputer automatycznie otrzymuje informację zwrotną)")
+                print("Tryb gry: komputer kontra gracz (komputer automatycznie otrzymuje informację zwrotną) \n")
                 FZ.CvP(1)
                 dzialanie=False
                 break
             elif(menu_CvP=='2'):
-                print("Tryb gry: komputer kontra gracz (gracz podaje komputerowi informację zwrotną)")
+                print("Tryb gry: komputer kontra gracz (gracz podaje komputerowi informację zwrotną) \n")
                 FZ.CvP(2)
                 dzialanie=False
                 break
@@ -37,25 +39,25 @@ while(dzialanie):
     elif (menu_glowne=='3'):
         dzialanie2=True
         while(dzialanie2):
-            print("Wybrany tryb: gracz kontra gracz")
+            print("\n Wybrany tryb: gracz kontra gracz")
             menu_PvP = input("Wybierz opcje gry: \n 1 - komputer losuje szyfry dla graczy \n 2 - gracze wymyślają szyfry dla oponenta \n 3 - Zmień tryb gry \n Wybór: ")
             if(menu_PvP=='1'):
-                print("Tryb gry: gracz kontra gracz (komputer losuje szyfry dla graczy)")
+                print("Tryb gry: gracz kontra gracz (komputer losuje szyfry dla graczy) \n")
                 FZ.PvP1(nick1, nick2)
                 dzialanie=False
                 break
             elif(menu_PvP=='2'):
-                print("Tryb gry: gracz kontra gracz (gracze wymyślają szyfry dla oponenta)")
+                print("\n Tryb gry: gracz kontra gracz (gracze wymyślają szyfry dla oponenta)")
                 while(True):
                     menu_PvP2 = input("Wybierz opcje gry: \n 1 - gracze automatycznie otrzymują informację zwrotną \n 2 - gracze podają wzajemnie informacje zwrotne \n 3 - Zmień tryb gry \n Wybór: ")
                     if(menu_PvP2=='1'):
-                        print("Tryb gry: gracz kontra gracz (gracze wymyślają szyfry dla oponenta)(gracze automatycznie otrzymują informację zwrotną)")
+                        print("Tryb gry: gracz kontra gracz (gracze wymyślają szyfry dla oponenta)(gracze automatycznie otrzymują informację zwrotną) \n")
                         FZ.PvP2(1, nick1, nick2)
                         dzialanie=False
                         dzialanie2=False
                         break
                     elif(menu_PvP2=='2'):
-                        print("Tryb gry: gracz kontra gracz (gracze wymyślają szyfry dla oponenta)(gracze podają wzajemnie informacje zwrotne)")
+                        print("Tryb gry: gracz kontra gracz (gracze wymyślają szyfry dla oponenta)(gracze podają wzajemnie informacje zwrotne) \n")
                         FZ.PvP2(2, nick1, nick2)
                         dzialanie=False
                         dzialanie2=False

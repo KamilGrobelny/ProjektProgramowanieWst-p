@@ -17,8 +17,8 @@ def PoprawnoscInformacji(wartosc1: str, wartosc2: str, n: int):
             @ n: Długość szyfru.
 
         Zwraca:
-                -'True'-jeśli podane wartości są poprawne.
-                -'False'-w przeciwnym wypadku, wypisuje odpowiedni komunikat błędu.
+            -'True'-jeśli podane wartości są poprawne.
+            -'False'-w przeciwnym wypadku, wypisuje odpowiedni komunikat błędu.
 
         Przykłady:
             >>> PoprawnoscInformacji(2, 1, 4)
@@ -214,7 +214,7 @@ def Odgadywanie(zgadywana: list[int], n: int, krok: int, Tryb_Gry: int, nazwa1: 
         else:
             return Odgadywanie(zgadywana, n, krok, Tryb_Gry, nazwa1, nazwa2)
 
-def PvC():
+def PvC(nazwa: str):
     """Funkcja umożliwia grę człowieka z komputerem, gdzie człowiek zgaduje szyfr komputera.
     
     Gra przebiega w następujący sposób:
@@ -225,10 +225,10 @@ def PvC():
     5. Gra kończy się, gdy użytkownik poprawnie odgadnie cały szyfr lub w przypadku innej zakończonej decyzji.
     
     Zwraca:
-    @ 0: Zwraca wartość 0, jeśli użytkownik odgadł szyfr komputera.
+    @ True: Zwraca wartość True, jeśli użytkownik odgadł szyfr komputera.
 
     Przykład:
-    >>> PvC()
+    >>> PvC("Gracz 1")
     "Podaj n: "
     # Następnie użytkownik podaje długość szyfru, np. 4.
     # Komputer generuje szyfr, a użytkownik zgaduje itd.
@@ -241,8 +241,8 @@ def PvC():
     zgadywana = []
     for i in range (n):
         zgadywana.append(randint(0, 9))
-    if Odgadywanie(zgadywana, n, 0, 1, '', '')[1]:
-        return 0
+    if Odgadywanie(zgadywana, n, 0, 1, nazwa, '')[1]:
+        return True
 
 def PvP1 (nick1: str, nick2: str):
     """Funkcja umożliwia grę dwóch graczy (ludzi), gdzie komputer generuje szyfry dla obu graczy.
@@ -255,7 +255,7 @@ def PvP1 (nick1: str, nick2: str):
     5. Wynik gry jest ogłaszany: któryś gracz wygral, czy był remis.
 
     Przykład:
-    >>> PvP1()
+    >>> PvP1("nazwa1", "nazwa2")
     "Podaj n: "
     # Następnie użytkownicy podają długość szyfru, np. 4.
     # Komputer generuje szyfry dla obu graczy, a następnie gracze próbują zgadnąć szyfr.
@@ -292,13 +292,6 @@ def PvP2 (Tryb_Gry: int, nick1: str, nick2: str):
     3. Funkcja wywołuje grę, w której pierwszy zawodnik próbuje zgadnąć szyfr drugiego zawodnika, a drugi zawodnik próbuje zgadnąć szyfr pierwszego.
     4. Po każdej próbie system sprawdza, ile cyfr zostało odgadniętych na właściwych miejscach.
     5. Wynik gry jest ogłaszany, który zawodnik wygrał lub czy jest remis.
-
-    Przykład:
-    >>> PvP2()
-    "Podaj n: "
-    # Gracze podają długość szyfru, np. 4.
-    # Drugi zawodnik podaje swój szyfr, a potem pierwszy zawodnik zgaduje. Następnie następuje zamiana ról.
-    # Po kilku próbach wynik gry jest ogłoszony (kto wygrał lub czy był remis). 
     """
     while(True):
         n = input("Podaj n [1, 20]: ")
@@ -363,18 +356,18 @@ def CvP(Tryb_Gry: int):
         na podstawie informacji zwrotnych podanych przez użytkownika lub funkcji InfoZwrotne.
 
         Argumenty:
-                @ zgadywana: Lista cyfr reprezentująca szyfr, który komputer próbuje odgadnąć.
+            @ zgadywana: Lista cyfr reprezentująca szyfr, który komputer próbuje odgadnąć.
 
         Zwraca:
-                @ mozliwe_cyfry: Lista cyfr, które są częścią szyfru.
-                @ liczba_prob: Liczba prób, jakie wykonał komputer.
-                @ zapychacz1: Lista składająca się z cyfry pełniącej rolę zapychacza oraz jej liczby wystąpień.
-                @ zapychacz2: Jak wyżej, dla drugiej cyfry zapychacza.
+            @ mozliwe_cyfry: Lista cyfr, które są częścią szyfru.
+            @ liczba_prob: Liczba prób, jakie wykonał komputer.
+            @ zapychacz1: Lista składająca się z cyfry pełniącej rolę zapychacza oraz jej liczby wystąpień.
+            @ zapychacz2: Jak wyżej, dla drugiej cyfry zapychacza.
         Przykład:
         >>> szukanie_liczb([2, 0, 3, 1])
         ([2, 0, 3, 1], 4, [7, 0], [8, 0])
         """
-        ilosc_ruchow = 0
+        ilosc_ruchow = 1
         zapychacz1 = [7, 0]
         zapychacz2 = [8, 0]
         mozliwe_liczby = []
@@ -387,7 +380,7 @@ def CvP(Tryb_Gry: int):
                 mozliwe_liczby.extend([9] * reszta)
                 return mozliwe_liczby, ilosc_ruchow, zapychacz1, zapychacz2
             proba = [i] * n
-            print("Próba:", "".join(map(str, proba)))
+            print(f"{ilosc_ruchow} Próba:", "".join(map(str, proba)))
             if Tryb_Gry==1:
                 tablica = InfoZwrotne(proba, zgadywana, n)
             else:
@@ -427,9 +420,9 @@ def CvP(Tryb_Gry: int):
             @ zapychacz2: Druga liczba zapychająca i licznik jej wystąpień w haśle.
 
         Zwraca:
-                -Finalny stan hasła po ustaleniu pozycji wszystkich liczb.
-                -Łączną liczbę prób zgadywania.
-                -Czy hasło zostało poprawnie odgadnięte.
+            -Finalny stan hasła po ustaleniu pozycji wszystkich liczb.
+            -Łączną liczbę prób zgadywania.
+            -Czy hasło zostało poprawnie odgadnięte.
         """
         miejsca = list(range(n))
         def funkcja_pomocnicza(haslo, zgadywana, n, ilosc_ruchow):
@@ -446,15 +439,15 @@ def CvP(Tryb_Gry: int):
                 >>> funkcja_pomocnicza([2, 0, 3, 1], [2, 0, 3, 1], 4, 4)
                 ([2, 0, 3, 1], 5, True)
             """
-            ilosc_ruchow+=1
+            #ilosc_ruchow+=1
             if Tryb_Gry==1:
                 if InfoZwrotne(haslo, zgadywana, n)[0]==n:
-                    print("Próba:", "".join(map(str, haslo)))
+                    print(f"{ilosc_ruchow} Próba:", "".join(map(str, haslo)))
                     return haslo, ilosc_ruchow, True
                 else:
                     return haslo, ilosc_ruchow, False
             else:
-                print("Próba:", "".join(map(str, haslo)))
+                print(f"{ilosc_ruchow} Próba:", "".join(map(str, haslo)))
                 while(True):
                     tablica=[input("Podaj liczbę cyfr na właściwych miejscach: "), input("Podaj liczbę cyfr na niewłaściwych miejscach: ")]
                     if PoprawnoscInformacji(tablica[0], tablica[1], n):
@@ -483,7 +476,7 @@ def CvP(Tryb_Gry: int):
                     return funkcja_pomocnicza(haslo, zgadywana, n, ilosc_ruchow)
                 proba = [AktualnyZapychacz[0]] * n
                 proba[miejsce] = liczba
-                print("Próba:", "".join(map(str, proba)))
+                print(f"{ilosc_ruchow} Próba:", "".join(map(str, proba)))
                 if Tryb_Gry==1:
                     tablica = InfoZwrotne(proba, zgadywana, n)
                 else:

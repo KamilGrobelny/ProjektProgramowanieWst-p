@@ -2,9 +2,10 @@
 #nazwy graczy podawane podczas uruchomiania gry
 nick1=$1
 nick2=$2
+Katalog_Projektu=$(basename "$PWD")
 source .venv/Scripts/activate
 sciezka=$(which python)
-if [[ "$sciezka" == *"/.venv/"* ]]; then
+if [[ "$sciezka" == *"/$Katalog_Projektu/.venv/"* ]]; then
     py menu.py $nick1 $nick2
     deactivate
 else
