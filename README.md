@@ -9,7 +9,8 @@ Ignacy Grzejda 287375
 Wszystko znajduje się w pliku instalacja.txt
 
 ## Opis projektu: 
-Gra w odgadywanie polega na tym, że jeden z graczy wymyśla hasło, a drugi gracz turowo zgaduje je dostająć po każdej próbie informacje ile liczb jest na właściwych miejscach i ile liczb będącym w szyfrze jest na niewłaściwych miejscach. 
+Gra w odgadywanie polega na tym, że jeden z graczy wymyśla hasło, a drugi gracz turowo zgaduje je dostając po każdej próbie informacje ile liczb jest na właściwych miejscach i ile liczb będącym w szyfrze jest na niewłaściwych miejscach.
+Należy pamiętać, że zbiory liczb właściwych i niewłaściwych są rozłączne w danej próbie, to znaczy, że jeżeli w szyfrze są dwie "4", a gracz w próbie poda jedną "4" to informacja zwrotna dla "4" zwiększa liczbę cyfr właściwych o 1 albo liczbę cyfr niewłaściwych o 1 - to zależy od pozycji "4" w próbie podanej przez gracza.
 # Tryby gry:
 PvC - Player vs Computer (ang. Gracz kontra Komputer) - tryb w którym komputer wymyśla hasło, a gracz ma za zadanie je zgadnąć. 
 
